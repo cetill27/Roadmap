@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Stack Engineer Roadmap 2026 — Beast Mode</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===== TOP BAR ===== -->
+    <header id="topbar">
+      <div class="tb-left">
+        <button id="sidebar-toggle" class="icon-btn" title="Toggle sidebar">
+          <span class="hamburger"></span>
+        </button>
+        <div class="brand">
+          <span class="brand-bolt">⚡</span>
+          <span class="brand-name">FullStack Roadmap <span class="brand-year">2026</span></span>
+        </div>
+      </div>
+
+      <div class="tb-center">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.75" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input id="search-input" type="text" placeholder="Search topics, weeks, concepts…" autocomplete="off" />
+          <kbd class="search-shortcut">⌘K</kbd>
+        </div>
+        <div id="search-dropdown" class="search-dropdown hidden"></div>
+      </div>
+
+      <div class="tb-right">
+        <div class="progress-pill">
+          <div class="progress-pill-track">
+            <div id="tb-progress-bar" class="progress-pill-fill"></div>
+          </div>
+          <span id="tb-progress-label">0%</span>
+        </div>
+        <button id="theme-toggle" class="icon-btn" title="Toggle theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+        <button id="reset-btn" class="icon-btn danger-btn" title="Reset all progress">↺</button>
+      </div>
+    </header>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar">
+      <div class="sidebar-progress">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 72 72">
+            <circle class="ring-bg" cx="36" cy="36" r="28"/>
+            <circle id="ring-fill" class="ring-fill" cx="36" cy="36" r="28"
+              stroke-dasharray="175.93"
+              stroke-dashoffset="175.93"/>
+          </svg>
+          <span id="ring-pct" class="ring-pct">0%</span>
+        </div>
+        <div class="ring-meta">
+          <span class="ring-title">Progress</span>
+          <span id="ring-sub" class="ring-sub">0 / 0 topics</span>
+        </div>
+      </div>
+
+      <!-- Phase navigation tree -->
+      <nav id="sidebar-nav"></nav>
+
+      <div class="sidebar-extras">
+        <button class="nav-extra-btn" data-view="daily-routine">📅 Daily Routine</button>
+        <button class="nav-extra-btn" data-view="tools">🔧 Tools & Ecosystem</button>
+        <button class="nav-extra-btn" data-view="build-public">🚀 Build in Public</button>
+        <button class="nav-extra-btn" data-view="interview-prep">🎯 Interview Prep</button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="main">
+      <div id="view-container"></div>
+    </main>
+
+  </div><!-- #app -->
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
