@@ -5259,24 +5259,76 @@ function renderConcepts(week) {
               <span class="concept-chevron">▾</span>
             </div>
             <div class="concept-body">
-              <p class="concept-desc">${c.desc}</p>
-              ${c.keyPoints?.length ? `
-                <div class="concept-key-points">
-                  <h5>Key Points</h5>
-                  <ul class="kp-list">
-                    ${c.keyPoints.map(kp => `<li class="kp-item"><span class="kp-bullet">▸</span><span>${kp}</span></li>`).join('')}
-                  </ul>
-                </div>` : ''}
-              ${c.code ? `
-                <div class="code-block-wrap">
-                  <div class="code-block-label">
-                    <span class="code-lang">Code</span>
-                    <button class="code-copy" onclick="copyCode(this)">Copy</button>
-                  </div>
-                  <pre class="code-block">${esc(c.code)}</pre>
-                </div>` : ''}
+              ${c.sections?.length ? renderConceptSections(c.sections) : renderLegacyConcept(c)}
             </div>
           </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderLegacyConcept(c) {
+  return `
+    <p class="concept-desc">${c.desc || ''}</p>
+    ${c.keyPoints?.length ? `
+      <div class="concept-key-points">
+        <h5>Key Points</h5>
+        <ul class="kp-list">
+          ${c.keyPoints.map(kp => `<li class="kp-item"><span class="kp-bullet">▸</span><span>${kp}</span></li>`).join('')}
+        </ul>
+      </div>` : ''}
+    ${c.code ? `
+      <div class="code-block-wrap">
+        <div class="code-block-label">
+          <span class="code-lang">${esc(c.codeLang || 'Code')}</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre class="code-block">${esc(c.code)}</pre>
+      </div>` : ''}`;
+}
+
+function renderConceptSections(sections) {
+  return `
+    <div class="concept-sections">
+      ${sections.map(s => {
+        const note = s.note ? `<div class="callout callout-info" style="margin-top:10px"><span class="callout-icon">💡</span><span>${s.note}</span></div>` : '';
+        const warn = s.warn ? `<div class="callout callout-warn" style="margin-top:10px"><span class="callout-icon">⚠️</span><span>${s.warn}</span></div>` : '';
+        const keyPoints = s.keyPoints?.length ? `
+          <div class="concept-key-points" style="margin-top:10px">
+            <h5>Key Points</h5>
+            <ul class="kp-list">
+              ${s.keyPoints.map(kp => `<li class="kp-item"><span class="kp-bullet">▸</span><span>${kp}</span></li>`).join('')}
+            </ul>
+          </div>` : '';
+        const table = s.table?.headers?.length ? `
+          <div class="table-wrap" style="margin-top:10px; overflow:auto; border:1px solid var(--border); border-radius:10px">
+            <table class="mdn-table" style="width:100%; border-collapse:collapse">
+              <thead>
+                <tr>${s.table.headers.map(h => `<th style="text-align:left; padding:10px 12px; font-size:.78rem; color:var(--text-3); background:var(--bg-2); border-bottom:1px solid var(--border)">${h}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${(s.table.rows || []).map(r => `<tr>${r.map(cell => `<td style="padding:10px 12px; vertical-align:top; border-bottom:1px solid var(--border-light); color:var(--text-2); font-size:.9rem; line-height:1.55">${cell}</td>`).join('')}</tr>`).join('')}
+              </tbody>
+            </table>
+          </div>` : '';
+        const code = s.code ? `
+          <div class="code-block-wrap" style="margin-top:12px">
+            <div class="code-block-label">
+              <span class="code-lang">${esc(s.codeLang || 'Example')}</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre class="code-block">${esc(s.code)}</pre>
+          </div>` : '';
+
+        return `
+          <section class="concept-section" style="padding-top:12px">
+            ${s.title ? `<h4 style="margin:10px 0 6px; font-size:1rem">${s.title}</h4>` : ''}
+            ${s.content ? `<div class="concept-mdn" style="color:var(--text-2); font-size:.92rem; line-height:1.75">${s.content}</div>` : ''}
+            ${keyPoints}
+            ${table}
+            ${note}
+            ${warn}
+            ${code}
+          </section>`;
       }).join('')}
     </div>`;
 }
